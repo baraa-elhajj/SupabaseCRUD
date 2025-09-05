@@ -4,9 +4,28 @@ import supabase from "./supabase-client";
 
 function App() {
   const [todoList, setTodoList] = useState([]);
-  const [newTodo, setTodo] = useState("");
+  const [newTodo, setNewTodo] = useState("");
 
-  // CRUD functions goes here
+  // CRUD functions goes here:
+  const addTodo = async () => {
+    const newTodoData = {
+      name: newTodo,
+      isCompleted: false,
+    };
+
+    // Insert into Supabase database
+    const { data, error } = await supabase
+      .from("TodoList")
+      .insert([newTodoData])
+      .single();
+
+    if (error) {
+      console.log("Error adding todo: ", error);
+    } else {
+      setTodoList((prev) => [...prev, data]);
+      setNewTodo("");
+    }
+  };
 
   return (
     <>
@@ -17,7 +36,7 @@ function App() {
           placeholder="New todo ..."
           onChange={(e) => setNewTodo(e.target.value)}
         />
-        <button>Add Todo</button>
+        <button onClick={addTodo}>Add Todo</button>
       </div>
       <div>
         <ul></ul>
