@@ -70,7 +70,7 @@ function App() {
         setTodoList((prev) => prev.filter((todo) => todo.id !== id));
       }
     } catch (err) {
-      console.log("Error deleting todo: ", err);
+      console.log("Unexpected error while deleting todo: ", err);
     }
   };
 
