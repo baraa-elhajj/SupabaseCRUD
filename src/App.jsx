@@ -58,7 +58,15 @@ function App() {
     }
   };
 
-  const deleteTodo = () => {};
+  const deleteTodo = async (id) => {
+    const { _, error } = await supabase.from("TodoList").delete().eq("id", id);
+
+    if (error) {
+      console.log("Error deleting todo: ", error);
+    } else {
+      setTodoList((prev) => prev.filter((todo) => todo.id !== id));
+    }
+  };
 
   return (
     <>
@@ -81,6 +89,7 @@ function App() {
                 {" "}
                 {todo.isCompleted ? "Undo" : "Complete"}
               </button>
+              <button onClick={() => deleteTodo(todo.id)}>Delete</button>
             </li>
           ))}
         </ul>
