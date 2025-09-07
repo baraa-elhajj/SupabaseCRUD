@@ -55,7 +55,15 @@ function App() {
         <button onClick={addTodo}>Add Todo</button>
       </div>
       <div>
-        <ul></ul>
+        <ul>
+          {todoList.map((todo) => (
+            <li key={todo.id}>
+              <p>{todo.name}</p>
+              <button> {todo.isCompleted ? "Undo" : "Complete"}</button>
+              <button>Delete</button>
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );
