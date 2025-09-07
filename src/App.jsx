@@ -42,6 +42,24 @@ function App() {
     }
   };
 
+  const completeTodo = async (id, isCompleted) => {
+    const { _, error } = await supabase
+      .from("TodoList")
+      .update({ isCompleted: !isCompleted })
+      .eq("id", id);
+
+    if (error) {
+      console.log("Error updating todo: ", error);
+    } else {
+      const updatedTodoList = todoList.map((todo) =>
+        todo.id === id ? { ...todo, isCompleted: !isCompleted } : todo
+      );
+      setTodoList(updatedTodoList);
+    }
+  };
+
+  const deleteTodo = () => {};
+
   return (
     <>
       <h1>Todo List</h1>
@@ -59,8 +77,10 @@ function App() {
           {todoList.map((todo) => (
             <li key={todo.id}>
               <p>{todo.name}</p>
-              <button> {todo.isCompleted ? "Undo" : "Complete"}</button>
-              <button>Delete</button>
+              <button onClick={() => completeTodo(todo.id, todo.isCompleted)}>
+                {" "}
+                {todo.isCompleted ? "Undo" : "Complete"}
+              </button>
             </li>
           ))}
         </ul>
