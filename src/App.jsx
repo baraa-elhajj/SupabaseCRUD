@@ -59,12 +59,18 @@ function App() {
   };
 
   const deleteTodo = async (id) => {
-    const { _, error } = await supabase.from("TodoList").delete().eq("id", id);
-
-    if (error) {
-      console.log("Error deleting todo: ", error);
-    } else {
-      setTodoList((prev) => prev.filter((todo) => todo.id !== id));
+    try {
+      const { _, error } = await supabase
+        .from("TodoList")
+        .delete()
+        .eq("id", id);
+      if (error) {
+        console.log("Error deleting todo: ", error);
+      } else {
+        setTodoList((prev) => prev.filter((todo) => todo.id !== id));
+      }
+    } catch (err) {
+      console.log("Error deleting todo: ", err);
     }
   };
 
